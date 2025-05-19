@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development Projects</title>
+    <style>
+      /* Basic styles for demonstration */
+      body {
+        font-family: sans-serif;
+        margin: 20px;
+      }
+      h1, h2 {
+        margin-bottom: 20px;
+      }
+      section {
+        margin-bottom: 40px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+      ul {
+        list-style-type: disc;
+        margin-left: 20px;
+      }
+      li {
+        margin-bottom: 5px;
+      }
+    </style>
+</head>
+<body>
+    <h1>Web Development Projects</h1>
+
+    <section id="portfolio-website">
+        <h2>Personal Portfolio Website</h2>
+        <p>Objective: Showcase skills and projects.</p>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <section id="about">
+            <h3>About</h3>
+            <p>Introduce yourself here...
+                I am Tanmaya muppana  
+
+            </p>
+        </section>
+        <section id="projects">
+            <h3>Projects</h3>
+            <p>web development</p>
+        </section>
+        <section id="contact">
+            <h3>Contact</h3>
+            <p>9123445678</p>
+        </section>
+    </section>
+
+    <section id="todo-app">
+        <h2>To-Do List/Note-Taking App</h2>
+        <p>Objective: Implement data persistence with local storage.</p>
+        <input type="text" id="todo-input" placeholder="Enter task...">
+        <button id="add-todo-button">Add Task</button>
+        <ul id="todo-list">
+            </ul>
+    </section>
+
+    <section id="product-listing">
+        <h2>Product Listing Page</h2>
+        <p>Objective: Create interactive interfaces for filtering and sorting.</p>
+        <div>
+            <label for="category-filter">Filter by Category:</label>
+            <select id="category-filter">
+                <option value="all">All</option>
+                </select>
+        </div>
+        <div>
+            <label for="sort-order">Sort by:</label>
+            <select id="sort-order">
+                <option value="name">Name</option>
+                <option value="price">Price</option>
+                <option value="rating">Rating</option>
+            </select>
+        </div>
+        <ul id="product-list">
+            </ul>
+    </section>
+
+    <script>
+        //  JavaScript (Conceptual - requires more HTML structure in real implementation)
+        //  These are just placeholders to show where the JavaScript would go.
+        //  You would need to add more HTML elements and refine this JavaScript
+        //  to make it fully functional.
+
+        //  To-Do List / Note-Taking App
+        const todoInput = document.getElementById('todo-input');
+        const addTodoButton = document.getElementById('add-todo-button');
+        const todoList = document.getElementById('todo-list');
+
+        if (addTodoButton) { //Check if the element exists
+            addTodoButton.addEventListener('click', () => {
+                const taskText = todoInput.value.trim();
+                if (taskText !== '') {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = taskText;
+                    todoList.appendChild(listItem);
+                    todoInput.value = '';
+                    //  Save to localStorage here
+                }
+            });
+          }
+
+
+        //  Product Listing Page
+        const categoryFilter = document.getElementById('category-filter');
+        const sortOrder = document.getElementById('sort-order');
+        const productList = document.getElementById('product-list');
+
+        if (categoryFilter && sortOrder && productList) {
+            categoryFilter.addEventListener('change', () => {
+                //  Filter products here
+            });
+
+            sortOrder.addEventListener('change', () => {
+                //  Sort products here
+            });
+        }
+    </script>
+</body>
+</html>
