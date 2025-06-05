@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Web App - Contact Form</title>
+    <style>
+/* Universal Box-Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* General Body Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    color: #333;
+    background-color: #eef2f5;
+}
+
+/* Header Styles */
+header {
+    background-color: #004d40; /* Dark Teal */
+    color: #e0f2f1; /* Light Teal */
+    padding: 1.5rem 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+nav ul li a {
+    color: #e0f2f1;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #00695c; /* Darker Teal */
+    color: #ffffff;
+}
+
+/* Main Content Area */
+main {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+section {
+    background-color: #ffffff;
+    padding: 35px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+section h2 {
+    color: #004d40;
+    margin-top: 0;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+/* Contact Form Section */
+.contact-form-section form {
+    display: flex;
+    flex-direction: column; /* Stack form groups vertically */
+    gap: 20px; /* Space between form groups */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%; /* Full width within form group */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #00897b; /* Medium Teal */
+    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2);
+    outline: none;
+}
+
+.form-group textarea {
+    resize: vertical; /* Allow vertical resizing only */
+    min-height: 120px;
+}
+
+.checkbox-group {
+    flex-direction: row; /* Keep checkbox and label inline */
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto; /* Override 100% width */
+}
+
+button[type="submit"] {
+    padding: 15px 30px;
+    background-color: #00897b; /* Medium Teal */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    align-self: flex-start; /* Align button to start (left) */
+}
+
+button[type="submit"]:hover {
+    background-color: #00796b; /* Slightly darker teal */
+    transform: translateY(-2px);
+}
+
+/* Error Messages */
+.error-message {
+    color: #d32f2f; /* Red */
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block; /* Ensure it takes its own line */
+    min-height: 1.2em; /* Prevent layout shift when error appears/disappears */
+}
+
+.form-group.invalid input,
+.form-group.invalid select,
+.form-group.invalid textarea {
+    border-color: #d32f2f; /* Red border for invalid fields */
+}
+
+.form-status-message {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    display: none; /* Hidden by default */
+}
+
+.form-status-message.success {
+    background-color: #e8f5e9; /* Light green */
+    color: #2e7d32; /* Dark green */
+    border: 1px solid #a5d6a7;
+}
+
+.form-status-message.error {
+    background-color: #ffebee; /* Light red */
+    color: #c62828; /* Dark red */
+    border: 1px solid #ef9a9a;
+}
+
+/* FAQ Section */
+.faq-item {
+    background-color: #f5f9fb;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.faq-item h3 {
+    color: #004d40;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #004d40;
+    color: #e0f2f1;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 40px;
+    font-size: 0.95rem;
+}
+
+/* ------------------------------------------------ */
+/* Performance & Compatibility Notes */
+/* ------------------------------------------------ */
+
+/* 1. CSS Optimization:
+   - Use shorthand properties where possible.
+   - Avoid overly complex selectors that might slow down rendering.
+   - For production, ensure minification (removes whitespace/comments).
+*/
+
+/* 2. Form Performance:
+   - Client-side validation prevents unnecessary server requests for invalid data.
+   - Server-side validation is still essential for security.
+*/
+
+/* 3. HTTP Requests:
+   - Keep image assets for backgrounds/icons optimized or use SVGs.
+   - Combine CSS and JS files where logical (as shown, one of each).
+*/
+
+/* Cross-Browser Compatibility:
+   - Modern HTML5 input types (`email`, `tel`) are widely supported, browsers provide basic validation.
+   - `novalidate` attribute allows custom JavaScript validation to take precedence.
+   - Flexbox is well-supported. Test form layouts on different browsers to catch subtle rendering differences.
+   - Use `placeholder` attributes for hints.
+*/
+
+/* Mobile Responsiveness: Media Queries */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav ul li a {
+        display: block;
+        width: 100%; /* Make nav links full width */
+    }
+
+    main {
+        padding: 0 15px;
+    }
+
+    section {
+        padding: 25px;
+    }
+
+    button[type="submit"] {
+        width: 100%; /* Make button full width on smaller screens */
+        align-self: center; /* Center the button */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 0.9em;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    section {
+        padding: 20px;
+    }
+
+    .form-group label {
+        font-size: 0.95em;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>Get in Touch!</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="intro-section">
+            <h2>Send Us a Message</h2>
+            <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+        </section>
+
+        <section class="contact-form-section">
+            <h2>Contact Form</h2>
+            <form id="contactForm" novalidate> <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Your Full Name" required>
+                    <span class="error-message" id="fullNameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number (Optional):</label>
+                    <input type="tel" id="phone" name="phone" placeholder="e.g., +91 9876543210" pattern="[0-9]{10,}" title="Please enter a valid phone number (at least 10 digits)">
+                    <span class="error-message" id="phoneError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">-- Please select a subject --</option>
+                        <option value="general">General Inquiry</option>
+                        <option value="support">Technical Support</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <span class="error-message" id="subjectError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message:</label>
+                    <textarea id="message" name="message" rows="6" placeholder="Type your message here..." required></textarea>
+                    <span class="error-message" id="messageError"></span>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="newsletter" name="newsletter">
+                    <label for="newsletter">Subscribe to our newsletter</label>
+                </div>
+
+                <button type="submit" id="submitBtn">Send Message</button>
+                <div class="form-status-message" id="formStatus"></div>
+            </form>
+        </section>
+
+        <section class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>How do I place an order?</h3>
+                <p>You can browse our products and add them to your cart, then proceed to checkout.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What are your delivery options?</h3>
+                <p>We offer standard and express delivery services across India.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Dynamic Web App. All rights reserved.</p>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+    const fullNameInput = document.getElementById('fullName');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const subjectSelect = document.getElementById('subject');
+    const messageTextarea = document.getElementById('message');
+    const formStatusMessage = document.getElementById('formStatus');
+
+    // Get error message elements
+    const fullNameError = document.getElementById('fullNameError');
+    const emailError = document.getElementById('emailError');
+    const phoneError = document.getElementById('phoneError');
+    const subjectError = document.getElementById('subjectError');
+    const messageError = document.getElementById('messageError');
+
+    // Helper function to display/hide error messages
+    function displayError(element, message) {
+        if (message) {
+            element.textContent = message;
+            element.closest('.form-group').classList.add('invalid');
+        } else {
+            element.textContent = '';
+            element.closest('.form-group').classList.remove('invalid');
+        }
+    }
+
+    // Validation functions
+    function validateFullName() {
+        if (fullNameInput.value.trim() === '') {
+            displayError(fullNameError, 'Full Name is required.');
+            return false;
+        } else {
+            displayError(fullNameError, '');
+            return true;
+        }
+    }
+
+    function validateEmail() {
+        const email = emailInput.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+
+        if (email === '') {
+            displayError(emailError, 'Email Address is required.');
+            return false;
+        } else if (!emailRegex.test(email)) {
+            displayError(emailError, 'Please enter a valid email address.');
+            return false;
+        } else {
+            displayError(emailError, '');
+            return true;
+        }
+    }
+
+    function validatePhone() {
+        const phone = phoneInput.value.trim();
+        // This regex allows for optional '+' and spaces, and requires at least 10 digits
+        const phoneRegex = /^\+?[0-9\s-]{10,}$/; 
+
+        if (phone === '') {
+            // Phone is optional, so no error if empty
+            displayError(phoneError, '');
+            return true;
+        } else if (!phoneRegex.test(phone)) {
+            displayError(phoneError, 'Please enter a valid phone number (min 10 digits, numbers and + only).');
+            return false;
+        } else {
+            displayError(phoneError, '');
+            return true;
+        }
+    }
+
+    function validateSubject() {
+        if (subjectSelect.value === '') {
+            displayError(subjectError, 'Please select a subject.');
+            return false;
+        } else {
+            displayError(subjectError, '');
+            return true;
+        }
+    }
+
+    function validateMessage() {
+        if (messageTextarea.value.trim() === '') {
+            displayError(messageError, 'Message is required.');
+            return false;
+        } else if (messageTextarea.value.trim().length < 10) {
+            displayError(messageError, 'Message must be at least 10 characters long.');
+            return false;
+        }
+        else {
+            displayError(messageError, '');
+            return true;
+        }
+    }
+
+    // Add event listeners for instant validation on input blur
+    fullNameInput.addEventListener('blur', validateFullName);
+    emailInput.addEventListener('blur', validateEmail);
+    phoneInput.addEventListener('blur', validatePhone); // Optional field, validates if something is entered
+    subjectSelect.addEventListener('blur', validateSubject);
+    messageTextarea.addEventListener('blur', validateMessage);
+
+    // Validate on input for real-time feedback (optional, can be performance intensive for very complex forms)
+    // fullNameInput.addEventListener('input', validateFullName);
+    // emailInput.addEventListener('input', validateEmail);
+    // messageTextarea.addEventListener('input', validateMessage);
+
+
+    // Handle form submission
+    contactForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        // Run all validations
+        const isFullNameValid = validateFullName();
+        const isEmailValid = validateEmail();
+        const isPhoneValid = validatePhone();
+        const isSubjectValid = validateSubject();
+        const isMessageValid = validateMessage();
+
+        // Check if all fields are valid
+        if (isFullNameValid && isEmailValid && isPhoneValid && isSubjectValid && isMessageValid) {
+            // Form is valid, proceed with submission (e.g., send data to a server)
+            formStatusMessage.textContent = 'Submitting form...';
+            formStatusMessage.className = 'form-status-message'; // Reset classes
+            formStatusMessage.style.display = 'block';
+
+            // Simulate sending data to a server (replace with actual fetch/XMLHttpRequest)
+            setTimeout(() => {
+                const formData = {
+                    fullName: fullNameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    phone: phoneInput.value.trim(),
+                    subject: subjectSelect.value,
+                    message: messageTextarea.value.trim(),
+                    newsletter: document.getElementById('newsletter').checked
+                };
+                console.log('Form Data:', formData);
+
+                // Simulate success or failure
+                const success = Math.random() > 0.2; // 80% chance of success for demonstration
+
+                if (success) {
+                    formStatusMessage.textContent = 'Thank you! Your message has been sent successfully.';
+                    formStatusMessage.classList.add('success');
+                    contactForm.reset(); // Clear the form
+                    // Clear error messages if any were left from previous attempts
+                    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+                    document.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
+
+                } else {
+                    formStatusMessage.textContent = 'Oops! Something went wrong. Please try again later.';
+                    formStatusMessage.classList.add('error');
+                }
+            }, 1500); // Simulate network delay
+        } else {
+            formStatusMessage.textContent = 'Please fix the errors in the form.';
+            formStatusMessage.classList.add('error');
+            formStatusMessage.style.display = 'block';
+        }
+    });
+
+    // Reset status message when input changes after a submission
+    contactForm.addEventListener('input', () => {
+        if (formStatusMessage.style.display === 'block') {
+            formStatusMessage.style.display = 'none';
+        }
+    });
+});
+</script>
+</body>
+</html>
